@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
+</head>
+<style>
+    body {
+        background-color: black;
+        display: flex;
+        align-items: center;
+        margin: 40px;
+        flex-direction: column;
+    }
+
+    .start {
+        background-color: #ff4791;
+        border: none;
+        border-radius: 4px;
+        color: white;
+        padding: 4px 12px;
+        font-size: 16px;
+    }
+
+    .stop {
+        background-color: #f8a8c3;
+        color: black;
+    }
+
+    button:hover {
+        background-color: #d47299;
+        cursor: pointer;
+    }
+
+    h1 {
+        font-size: 64px;
+        color: white;
+    }
+</style>
+
+<body>
+    <div>
+        <input type="date" value="2023-01-01" />
+        <button class="start" onclick="start()">Vai</button>
+        <button class="start stop" onclick="stop()">Resetar</button>
+    </div>
+
+    <h1>🤔</h1>
+
+    <script>
+        const second = 1000;
+        const minute = 60 * second;
+        const hour = 60 * minute;
+        const day = 24 * hour;
+
+        let total;
+        let finalDate;
+        let intervalId;
+
+        if (localStorage.getItem("timer")) {
+            finalDate = localStorage.getItem("timer");
+            intervalId = setInterval(timer, 1000);
+        }
+
+        function start() {
+            /* variável, nome da variável = não sei o que é, metódo (tag). class */
+            const date = document.querySelector("input").value;
+            let finalDate = new Date(date).getTime();
+            localStorage.setItem("timer", finalDate);
+
+            intervalId = setInterval(timer, 1000);
+        }
+
+        function timer() {
+            let now = new Date().getTime();
+            console.log(finalDate);
+            total = finalDate - now;
+
+            const days = Math.floor(total / day);
+            const hours = Math.floor((total % day) / hour) + 3;
+            const minutes = Math.floor((total % hour) / minute);
+            const seconds = Math.floor((total % minute) / second);
+
+            document.querySelector("h1").innerHTML = `${days} d ${hours} h ${minutes} m ${seconds} s`;
+        }
+
+        function stop() {
+            document.querySelector("h1").innerText = "🤔";
+            clearInterval(intervalId);
+            localStorage.removeItem("timer");
+        }
+
+
+    </script>
+</body>
+
+</html>
